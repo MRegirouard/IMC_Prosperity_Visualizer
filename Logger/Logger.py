@@ -4,10 +4,14 @@ from typing import Any
 
 class Logger:
     def __init__(self) -> None:
+        '''
+        Constructor
+        effects: Creates Logger object with empty logs
+        '''
         self.logs = ""
 
-    def print(self, *objects: Any, sep: str = " ", end: str = "\n") -> None:
-        self.logs += sep.join(map(str, objects)) + end
+    # def print(self, *objects: Any, sep: str = " ", end: str = "\n") -> None:
+    #     self.logs += sep.join(map(str, objects)) + end
 
     # values: dict[str, Any]
     def flush(self, state: TradingState, orders: dict[Symbol, list[Order]], 
@@ -69,9 +73,10 @@ class Logger:
         trades: dict[Symbol, list[Trade]]
 
         effects: For each symbol in the trades dict passed in, loop through
-        each trade for that symbol and append pertinent info to compressed list
+        each trade for that symbol and append pertinent info in list
+        format to compressed list
 
-        returns: compressed list
+        returns: compressed trades list
         '''
         compressed = []
         for arr in trades.values():
@@ -84,10 +89,19 @@ class Logger:
                     trade.quantity,
                     trade.timestamp,
                 ])
-
         return compressed
 
     def compress_orders(self, orders: dict[Symbol, list[Order]]) -> list[list[Any]]:
+        '''
+        orders: dict[Symbol, list[Order]]
+
+        effects: For each symbol, iterate through each order for that symbol,
+        each time appending symbol, price and quantity in list format to 
+        compressed list
+
+        returns: compressed orders list
+        '''
+
         compressed = []
         for arr in orders.values():
             for order in arr:
@@ -96,7 +110,6 @@ class Logger:
         return compressed
 
 logger = Logger()
-
 class Trader:
     def run(self, state: TradingState) -> dict[Symbol, list[Order]]:
         orders = {}
