@@ -9,9 +9,15 @@ class Logger:
     def print(self, *objects: Any, sep: str = " ", end: str = "\n") -> None:
         self.logs += sep.join(map(str, objects)) + end
 
-    def flush(self, state: TradingState, orders: dict[Symbol, list[Order]]) -> None:
+    # values: dict[str, Any]
+    def flush(self, state: TradingState, orders: dict[Symbol, list[Order]], 
+              values: dict[str, Any]) -> None:
         '''
-        
+        state: the current Trading State
+        orders: dict with security symbol as key and order-list as key-value
+        effects: Formats the orders dict using json and helper functions 
+        cls: changes encoder to return dict
+        sort_keys: output of orders will be sorted by keys
         '''
         print(json.dumps({
             "state": self.compress_state(state),
@@ -22,6 +28,24 @@ class Logger:
         self.logs = ""
 
     def compress_state(self, state: TradingState) -> dict[str, Any]:
+        '''
+        listings: Dict[Symbol, Listing]
+        listing iterates through listings a list of listings, 
+        each containing a [symbol, product, denomination]
+
+        order_depths: Dict[Symbol, OrderDepth]
+        OrderDepth: buy_orders = Dict[int, int]
+                    sell_orders = Dict[int, int]
+                
+        order_depths: Creates a dictionary where the key is each symbol,
+        the key-value is a two element list containing the buy_orders
+        and sell orders
+
+        state: the current trading state
+        effects: Creates listings list and order_depths dict
+        returns: dictionary with keys and values, uses compress trades to format
+        market_trades and own_trades
+        '''
         listings = []
         for listing in state.listings.values():
             listings.append([listing["symbol"], listing["product"], listing["denomination"]])
@@ -41,6 +65,14 @@ class Logger:
         }
 
     def compress_trades(self, trades: dict[Symbol, list[Trade]]) -> list[list[Any]]:
+        '''
+        trades: dict[Symbol, list[Trade]]
+
+        effects: For each symbol in the trades dict passed in, loop through
+        each trade for that symbol and append pertinent info to compressed list
+
+        returns: compressed list
+        '''
         compressed = []
         for arr in trades.values():
             for trade in arr:
@@ -68,8 +100,9 @@ logger = Logger()
 class Trader:
     def run(self, state: TradingState) -> dict[Symbol, list[Order]]:
         orders = {}
+        values = {}
 
         # TODO: Add logic
 
-        logger.flush(state, orders)
+        logger.flush(state, orders, values)
         return orders
