@@ -27,9 +27,15 @@ class Logger:
             "state": self.compress_state(state),
             "orders": self.compress_orders(orders),
             "logs": self.logs,
+            "values": values
         }, cls=ProsperityEncoder, separators=(",", ":"), sort_keys=True))
 
         self.logs = ""
+
+    def compress_values(self, state: TradingState, values: dict[str, Any]) ->dict[str, ]:
+        '''
+        We want 
+        '''
 
     def compress_state(self, state: TradingState) -> dict[str, Any]:
         '''
