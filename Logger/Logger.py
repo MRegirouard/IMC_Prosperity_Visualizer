@@ -10,9 +10,6 @@ class Logger:
         '''
         self.logs = ""
 
-    # def print(self, *objects: Any, sep: str = " ", end: str = "\n") -> None:
-    #     self.logs += sep.join(map(str, objects)) + end
-
     # values: dict[str, Any]
     def flush(self, state: TradingState, orders: dict[Symbol, list[Order]], 
               values: dict[str, Any]) -> None:
