@@ -169,3 +169,10 @@ class CompressedOrder:
         self.symbol = symbol
         self.price = price
         self.quantity = quantity
+
+
+class CompressedSandboxLogRow:
+    def __init__(self, state: CompressedTradingState, orders: CompressedOrder, logs: str):
+        self.state = state 
+        self.orders = orders
+        self.logs = logs
