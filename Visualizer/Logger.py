@@ -28,6 +28,13 @@ class Logger:
         }, cls=ProsperityEncoder, separators=(",", ":"), sort_keys=True))
 
         self.logs = ""
+        
+    def print(self, msg: str) -> None:
+        '''
+        msg: message to be printed
+        effects: prints message
+        '''
+        self.logs += msg + "\n"
 
     def compress_state(self, state: TradingState) -> dict[str, Any]:
         '''
