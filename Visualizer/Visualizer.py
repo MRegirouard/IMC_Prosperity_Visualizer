@@ -40,9 +40,9 @@ if __name__ == "__main__":
         try:
             graph = graph_fn(data)
             if i % 2 == 0:
-                col1.plotly_chart(graph)
+                col1.plotly_chart(graph, use_container_width=True)
             else:
-                col2.plotly_chart(graph)
+                col2.plotly_chart(graph, use_container_width=True)
         except Exception as e:
             if i % 2 == 0:
                 col1.warning("Graph " + str(i+1) + " failed to load because of error: " + str(e))
