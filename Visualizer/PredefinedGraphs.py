@@ -70,3 +70,16 @@ def pnl_mid_price_product(product: Product, data: LogData) -> go.Figure:
     fig.update_layout(title="Mid Price and PnL for " + product, xaxis_title="Timestamp", yaxis_title="Price")
     return fig
 
+def logged_values(values: List[str], data: LogData) -> go.Figure:
+    """
+    Plots desired values from log file
+    """
+    fig = go.Figure()
+    timestamps = [activity_data.timestamp for activity_data in data.activities[list(data.activities.keys())[0]]]
+    
+    for value in values:
+        logged_values = [data.values[i][value] for i in range(len(data.values))]
+        fig.add_trace(go.Scatter(x=timestamps, y=logged_values, name=value))
+    
+    fig.update_layout(title="Logged Values", xaxis_title="Timestamp", yaxis_title="Value")
+    return fig
