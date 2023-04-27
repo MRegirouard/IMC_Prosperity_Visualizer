@@ -22,3 +22,21 @@ def summary(data: LogData) -> go.Figure:
     fig.update_layout(title="Log Summary")
     return fig
 
+def pnl(data: LogData) -> go.Figure:
+    """
+    Graphs the PnL for each product, as well as the total PnL
+    """
+    fig = go.Figure()
+    timestamps = [activity_data.timestamp for activity_data in data.activities[list(data.activities.keys())[0]]]
+    total_pnl: List[float] = [0] * len(timestamps)
+    
+    for product in data.activities:
+        activity_log = data.activities[product]
+        pnl = [activity_data.profit_and_loss for activity_data in activity_log]
+        total_pnl = [total_pnl[i] + pnl[i] for i in range(len(pnl))]
+        fig.add_trace(go.Scatter(x=timestamps, y=pnl, name=product))
+        
+    fig.add_trace(go.Scatter(x=timestamps, y=total_pnl, name="Total PnL"))
+    fig.update_layout(title="Profit and Loss", xaxis_title="Timestamp", yaxis_title="PnL")
+    return fig
+
