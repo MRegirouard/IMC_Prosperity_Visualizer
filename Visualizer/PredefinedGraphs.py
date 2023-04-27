@@ -40,6 +40,28 @@ def pnl(data: LogData) -> go.Figure:
     fig.update_layout(title="Profit and Loss", xaxis_title="Timestamp", yaxis_title="PnL")
     return fig
 
+def positions(data: LogData) -> go.Figure:
+    """
+    Displays the positions of each product
+    """
+    fig = go.Figure()
+    timestamps = [trading_state.timestamp for trading_state in data.trading_states]
+    products: List[Product] = list(data.activities.keys())
+    positions: Dict[Product, List[int]] = {product: [] for product in products}
+    
+    for trading_state in data.trading_states:
+        for product in products:
+            if product in trading_state.position:
+                positions[product].append(trading_state.position[product])
+            else:
+                positions[product].append(0)
+    
+    for product in products:
+        fig.add_trace(go.Scatter(x=timestamps, y=positions[product], name=product))
+        
+    fig.update_layout(title="Positions", xaxis_title="Timestamp", yaxis_title="Position")
+    return fig
+    
 def mid_prices(data: LogData) -> go.Figure:
     """
     Displays the mid price for each product
