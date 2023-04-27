@@ -9,6 +9,7 @@ from datamodel import *
 from typing import Dict, List, Any, Tuple, TextIO
 import json
 import csv
+import streamlit as st
 
 """
 A class to store data from the activity logs, specifically, all the data for one product on one timpestamp.
@@ -47,6 +48,7 @@ log_file (TextIO): The log file to parse, as an open file object.
 Returns:
 LogData: The parsed data from the log file.
 """
+@st.cache_data
 def parse(log_file: TextIO) -> LogData:
     # Find the start of each section of the log file:
     lines = log_file.read().split('\n')
