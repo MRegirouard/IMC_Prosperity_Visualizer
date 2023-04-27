@@ -57,7 +57,10 @@ class Logger:
         '''
         listings = []
         for listing in state.listings.values():
-            listings.append([listing["symbol"], listing["product"], listing["denomination"]])
+            symbol = listing["symbol"] if isinstance(listing, dict) else listing.symbol
+            product = listing["product"] if isinstance(listing, dict) else listing.product
+            denomination = listing["denomination"] if isinstance(listing, dict) else listing.denomination
+            listings.append([symbol, product, denomination])
 
         order_depths = {}
         for symbol, order_depth in state.order_depths.items():
