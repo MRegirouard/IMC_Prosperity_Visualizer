@@ -3,6 +3,7 @@ import plotly.express as px
 from plotly import subplots as sp
 from LogParser import LogData
 from datamodel import *
+from typing import Callable
 
 def summary(data: LogData) -> go.Figure:
     """
@@ -104,4 +105,28 @@ def logged_values(values: List[str], data: LogData) -> go.Figure:
         fig.add_trace(go.Scatter(x=timestamps, y=logged_values, name=value))
     
     fig.update_layout(title="Logged Values", xaxis_title="Timestamp", yaxis_title="Value")
+    return fig
+
+def trades_histogram(product: Product, base_price_func:
+    Callable[[Product, LogData, Time], int] | int, data: LogData) -> go.Figure:
+    """
+    Displays a histogram of the number of trades occurring at each price level
+    above and below the base price, found using function passed as an argument.
+    """
+    fig = go.Figure()
+    
+    diffs: List[int] = []
+
+    for state in data.trading_states:
+        if isinstance(base_price_func, int):
+            base_price = base_price_func
+        else:
+            base_price = base_price_func(product, data, state.timestamp)
+        
+        if product in state.market_trades:
+            for trade in state.market_trades[product]:
+                diffs.append(trade.price - base_price)
+                
+    fig.add_trace(go.Histogram(x=diffs, histnorm='probability'))
+    fig.update_layout(title="Volume Histogram for " + product, xaxis_title="Price", yaxis_title="Probability")   
     return fig
