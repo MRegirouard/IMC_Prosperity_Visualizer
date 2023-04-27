@@ -55,3 +55,18 @@ def mid_prices(data: LogData) -> go.Figure:
     fig.update_layout(title="Mid Prices", xaxis_title="Timestamp", yaxis_title="Price")
     return fig
 
+def pnl_mid_price_product(product: Product, data: LogData) -> go.Figure:
+    """
+    Displays the PnL and mid price for a given product
+    """
+    activity_log = data.activities[product]
+    timestamps = [activity_data.timestamp for activity_data in activity_log]
+    mid_prices = [activity_data.mid_price for activity_data in activity_log]
+    pnl_values = [activity_data.profit_and_loss for activity_data in activity_log]
+    
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=timestamps, y=mid_prices, name=product))
+    fig.add_trace(go.Scatter(x=timestamps, y=pnl_values, name=product + " PnL"))
+    fig.update_layout(title="Mid Price and PnL for " + product, xaxis_title="Timestamp", yaxis_title="Price")
+    return fig
+
