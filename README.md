@@ -1,6 +1,8 @@
 # IMC_Prosperity_Visualizer
 A custom visualizer to show graphs and display other data from IMC Prosperity algorithm runs.
 
+![image](https://user-images.githubusercontent.com/46038297/234940290-fdbd26e0-747a-41a4-8b21-047c651c83a1.png)
+
 ## Motivation
 To create profitable trading algorithms, it is imperative that you understand the nature of the assets that you are trading. One way trading teams have done this is by creating and analyzing graphs to find trading ideas. In a competitive environment it is important to move quickly, but we found generating visuals to be tedious and managing our data became more difficult as the 2023 IMC Prosperity competition went on. <br>
 This repository aims to make graphing data easy and fast, so users can focus on analysis rather than generating the graphs.
